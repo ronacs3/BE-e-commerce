@@ -31,8 +31,11 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "./swagger.json" assert { type: "json" };
+import fs from "fs";
 
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(new URL("./swagger.json", import.meta.url))
+);
 // Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 console.log("Swagger UI available at /api-docs");
