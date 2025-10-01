@@ -10,9 +10,6 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  image: {
-    type: String, // có thể lưu URL ảnh đại diện cho category
-  },
   createdAt: {
     type: Date,
     default: Date.now,

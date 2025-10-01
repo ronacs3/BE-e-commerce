@@ -3,7 +3,7 @@
   "info": {
     "title": "E-commerce API",
     "version": "1.0.0",
-    "description": "Simple e-commerce backend API (Auth, Products, Orders)"
+    "description": "Simple e-commerce backend API (Auth, Products, Orders, Categories)"
   },
   "servers": [
     {
@@ -79,6 +79,20 @@
           "total": { "type": "number" },
           "address": { "type": "string" },
           "status": { "type": "string" }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "image": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "products": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Product" }
+          }
         }
       }
     }
@@ -227,7 +241,7 @@
                     "items": { "type": "string", "format": "binary" }
                   }
                 },
-                "required": ["name", "price"]
+                "required": ["name", "price", "category"]
               }
             }
           }
@@ -426,6 +440,46 @@
           }
         },
         "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "summary": "List categories (with products)",
+        "tags": ["Categories"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Category" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create category (admin only)",
+        "tags": ["Categories"],
+        "description": "🔒 Requires `role: admin`",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
       }
     }
   }
